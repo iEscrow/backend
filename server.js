@@ -1,25 +1,20 @@
-const express = require ('express');
+require('dotenv').config()
+const mainRouter = require('./src/routes')
+const express = require('express')
+const bodyParser = require('body-parser')
+const cors = require('cors')
+const app = express()
+const i18n = require('./src/config/i18n')
+const passport = require('passport')
 
-const routesBankAccounts = require('./routes/bank-accounts/BankAccounts'); // import the routes
-const routesBanks = require('./routes/banks/banks'); 
-const routesCriptocurrencies = require('./routes/criptocurrencies/criptocurrencies'); 
-const routesEscrows = require('./routes/escrows/escrows'); 
-const routesOffers = require('./routes/offers/offers'); 
-const routesUsers = require('./routes/users/users'); 
-const app = express();
-var bodyParser = require('body-parser')
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
-
-// parse application/json
+app.use(cors())
 app.use(bodyParser.json())
+app.use(i18n.init)
+app.use(passport.initialize())
+app.use('/api', mainRouter)
 
-// Parse request body
-app.use(express.json())
+const port = process.env.PORT || 3000
 
-
-app.use('/', routesBankAccounts, routesBanks, routesCriptocurrencies, routesEscrows, routesOffers, routesUsers); //to use the routes
-
-const listener = app.listen(process.env.PORT || 3000, () => {
-    console.log('Your app is listening on port ' + listener.address().port)
+app.listen(port, () => {
+  console.log(`Servidor escuchando en el puerto ${port}`)
 })

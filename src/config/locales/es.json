@@ -1,0 +1,12 @@
+{
+	"any": {
+		"required": "{{label}} es un campo obligatorio."
+	},
+	"string": {
+		"base": "El valor de {{label}} debe ser una cadena de texto.",
+		"empty": "El valor de {{label}} no puede estar vacío.",
+		"min": "{{label}} debe tener al menos {{limit}} caracteres.",
+		"max": "no puede tener más de {{limit}} caracteres.",
+		"email": "El formato de {{label}} no es válido."
+	}
+}
