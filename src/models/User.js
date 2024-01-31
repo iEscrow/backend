@@ -1,22 +1,19 @@
-const { DataTypes } = require('sequelize')
-const db = require('../db/index')
+const { DataTypes } = require("sequelize");
+const db = require("../db/index");
+const BankAccount = require("./BankAccount");
+const Wallet = require("./Wallet");
 
 const User = db.define(
-  'User',
+  "User",
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    firstname: {
+    username: {
       type: DataTypes.STRING(50),
       allowNull: false,
-    },
-    lastname: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-      unique: false,
     },
     email: {
       type: DataTypes.STRING(100),
@@ -27,18 +24,16 @@ const User = db.define(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-    },
   },
   {
-    timestamps: false,
-    tableName: 'users',
+    timestamps: true,
   }
-)
+);
 
-module.exports = User
+User.hasMany(Wallet, { foreignKey: 'user_id' });
+User.hasMany(BankAccount, { foreignKey: 'user_id' });
+
+
+
+
+module.exports = User;

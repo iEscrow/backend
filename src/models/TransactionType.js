@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const db = require("../db/index");
 
-const Bank = db.define('Bank', {
+const TransactionType = db.define('TransactionType', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -13,4 +13,4 @@ const Bank = db.define('Bank', {
   },
 })
 
-module.exports = Bank;
+module.exports = TransactionType;

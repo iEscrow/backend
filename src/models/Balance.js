@@ -1,16 +1,16 @@
 const { DataTypes } = require('sequelize');
 const db = require("../db/index");
 
-const Bank = db.define('Bank', {
+const Balance = db.define('Balance', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  name: {
-    type: DataTypes.STRING,
+  amount: {
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
 })
 
-module.exports = Bank;
+module.exports = Balance;

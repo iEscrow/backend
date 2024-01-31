@@ -1,7 +1,8 @@
 const { DataTypes } = require('sequelize');
 const db = require("../db/index");
+const Escrow = require('./Escrow');
 
-const Bank = db.define('Bank', {
+const EscrowStatus = db.define('EscrowStatus', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -13,4 +14,7 @@ const Bank = db.define('Bank', {
   },
 })
 
-module.exports = Bank;
+//EscrowStatus.belongsTo(Escrow, { foreignKey: 'status' }); 
+
+
+module.exports = EscrowStatus;
