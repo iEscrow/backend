@@ -16,6 +16,18 @@ const BankAccount = db.define(
       allowNull: true,
     },
     alias: { type: DataTypes.STRING(50), allowNull: true },
+  currency_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: "Currencies",
+      key: "id",
+    },
+  },
+  custom_name: {
+    type: DataTypes.STRING(50),
+    allowNull: true,
+  }
   },
 );
 

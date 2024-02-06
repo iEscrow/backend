@@ -28,6 +28,9 @@ const Escrow = db.define("Escrow", {
       key: "id",
     },
   },
+  payer_commission: {
+    type: DataTypes.FLOAT,
+  },
   payer_id: {
     type: DataTypes.INTEGER,
     references: {
@@ -146,7 +149,7 @@ const Escrow = db.define("Escrow", {
       key: "id",
     },
   },
-});
+}, {timestamps: true});
 
 Escrow.belongsTo(EscrowStatus, { foreignKey: 'status', as: 'Status' });
 Escrow.belongsTo(EscrowType, { foreignKey: 'type', as: 'Type' });
