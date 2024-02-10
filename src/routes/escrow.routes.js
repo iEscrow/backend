@@ -12,7 +12,10 @@ router.get("/", escrowController.getAllEscrows);
 router.get("/types", escrowController.getAllEscrowTypes);
 router.get("/my-escrows", jwtMiddleware, escrowController.getAllMyEscrows);
 router.get("/:id", escrowController.getEscrowByID);
-router.post("/", escrowController.createEscrow);
+router.post("/", jwtMiddleware,escrowController.createEscrow);
 router.put("/publish/:id", jwtMiddleware , escrowController.escrowPayerInfo);
+router.put("/accept/:id", jwtMiddleware , escrowController.escrowPayeeAccept);
+router.put("/buy/:id", jwtMiddleware , escrowController.escrowPayeeInfo);
+router.put("/pay/:id", jwtMiddleware , escrowController.escrowPay);
 
 module.exports = router;

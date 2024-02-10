@@ -3,6 +3,7 @@ const Joi = require("joi");
 const createSchema = Joi.object({
   bank_id: Joi.number().required(),
   user_id: Joi.number().required(),
+  currency_id: Joi.number().required(),
   cbu: Joi.alternatives().try(
     Joi.string().length(22).required(),
     Joi.allow(null)
@@ -18,6 +19,7 @@ const updateSchema = Joi.object({
   alias: Joi.string().max(50).required(),
   bank_id: Joi.number(),
   user_id: Joi.number(),
+  currency_id: Joi.number(),
 });
 
 module.exports = {

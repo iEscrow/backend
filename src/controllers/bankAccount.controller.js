@@ -5,6 +5,7 @@ const BankAccount = require("../models/BankAccount");
 const User = require("../models/User");
 const Bank = require("../models/Bank");
 const { updateSchema, createSchema } = require("../schemas/bankAccount.schema");
+const Currency = require("../models/Currency");
 
 // Obtener todas las cuentas bancarias de un usuario
 const getBankAccounts = async (req, res) => {
@@ -12,7 +13,7 @@ const getBankAccounts = async (req, res) => {
     const user_id = req.user.id;
     const accounts = await BankAccount.findAll({
       where: { user_id },
-      include: Bank,
+      include: [Bank],
     });
 
     res.status(200).json(accounts);
@@ -27,7 +28,7 @@ const createBankAccount = async (req, res) => {
     // Validate data
     const { error } = createSchema.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-
+    console.log(req.body)
     // Check for duplicate alias
     if (req.body.alias) {
       const duplicateAlias = await BankAccount.findOne({
@@ -49,10 +50,10 @@ const createBankAccount = async (req, res) => {
     }
 
     // Create account if valid
-    const { cbu, bank_id, alias } = req.body;
+    const { cbu, bank_id, alias,currency_id } = req.body;
     const { id: user_id } = req.user;
     const newBankAccount = await BankAccount.create(
-      { cbu, alias, user_id, bank_id },
+      { cbu, alias, user_id, bank_id, currency_id },
       { raw: true }
     );
 
