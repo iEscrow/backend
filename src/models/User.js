@@ -2,6 +2,7 @@ const { DataTypes } = require("sequelize");
 const db = require("../db/index");
 const BankAccount = require("./BankAccount");
 const Wallet = require("./Wallet");
+const Balance = require("./Balance");
 
 const User = db.define(
   "User",
@@ -32,6 +33,7 @@ const User = db.define(
 
 User.hasMany(Wallet, { foreignKey: 'user_id' });
 User.hasMany(BankAccount, { foreignKey: 'user_id' });
+User.hasMany(Balance, { foreignKey: 'user_id' });
 
 
 

@@ -3,6 +3,8 @@ const db = require("../db/index");
 const CurrencyType = require("./CurrencyType");
 const Network = require("./Network");
 const Country = require("./Country");
+const TokenStandard = require("./TokenStandard");
+const Token = require("./Token");
 
 const Currency = db.define("Currencies", {
   id: {
@@ -26,18 +28,27 @@ const Currency = db.define("Currencies", {
       key: "id",
     },
   },
-  network_id: {
+  token_standard_id: {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: "Networks",
+      model: "TokenStandards",
+      key: "id",
+    },
+  },
+  token_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: "Tokens",
       key: "id",
     },
   },
 });
 
 Currency.belongsTo(CurrencyType, { foreignKey: "type" });
-Currency.belongsTo(Network, { foreignKey: "network_id" });
+Currency.belongsTo(TokenStandard, { foreignKey: "token_standard_id" });
+Currency.belongsTo(Token, { foreignKey: "token_id" });
 Currency.belongsTo(Country, { foreignKey: "country_id" });
 
 module.exports = Currency;

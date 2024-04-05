@@ -8,9 +8,18 @@ const Balance = db.define('Balance', {
     autoIncrement: true,
   },
   amount: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.FLOAT,
     allowNull: false,
   },
+  currency_id:{
+    type: DataTypes.INTEGER,
+    references: {
+      model: "Currencies",
+      key: "id",
+    },
+  }
 })
 
 module.exports = Balance;
+
+

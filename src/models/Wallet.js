@@ -19,10 +19,6 @@ const Wallet = db.define(
       allowNull: false,
     },
     publicKey: { type: DataTypes.STRING(200), allowNull: false },
-    blockchain: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-    },
   }
 );
 

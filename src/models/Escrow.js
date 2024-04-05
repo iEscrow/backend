@@ -21,6 +21,27 @@ const Escrow = db.define("Escrow", {
       key: "id",
     },
   },
+ 
+  master_wallet:{
+    type: DataTypes.STRING,
+  },
+  payer_amount_receives: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+  },
+  payee_amount_receives: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+  },
+  payer_amount_sent: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+  },
+  payee_amount_sent: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+  },
+  
   payer_currency_type: {
     type: DataTypes.INTEGER,
     references: {
@@ -30,6 +51,10 @@ const Escrow = db.define("Escrow", {
   },
   payer_commission: {
     type: DataTypes.FLOAT,
+  },
+ who_pay: {
+    type: DataTypes.INTEGER,
+    allowNull: true
   },
   payer_id: {
     type: DataTypes.INTEGER,
@@ -148,6 +173,14 @@ const Escrow = db.define("Escrow", {
       model: "EscrowStatuses",
       key: "id",
     },
+  },
+  payer_paid: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  payee_paid: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   },
 }, {timestamps: true});
 
