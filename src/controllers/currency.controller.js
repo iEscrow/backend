@@ -74,7 +74,7 @@ exports.create = async (req, res) => {
       return res.status(400).send(error.details[0].message);
     }
     
-    if(req.body?.name){
+    if(req.body.name){
       const existingCurrency = await Currency.findOne({
         where: { name: req.body.name },
       });

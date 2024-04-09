@@ -461,8 +461,8 @@ const transactionChecker = async (escrow) => {
           payee_wallet.address,
           60000,
           timestamp,
-          payer_currency?.Token?.token,
-          payer_currency?.TokenStandard?.name,
+          payer_currency.Token.token,
+          payer_currency.TokenStandard.name,
           async () => await escrowCryptoPay(escrow, "payer")
         );
   const payeeTurn = () =>
@@ -474,8 +474,8 @@ const transactionChecker = async (escrow) => {
           payer_wallet.address,
           60000,
           timestamp,
-          payee_currency?.Token?.token,
-          payee_currency?.TokenStandard?.name,
+          payee_currency.Token.token,
+          payee_currency.TokenStandard.name,
           async () => await escrowCryptoPay(escrow, "payee")
         );
 

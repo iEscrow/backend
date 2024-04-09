@@ -32,7 +32,7 @@ const createBankAccount = async (req, res) => {
     // Check for duplicate alias
     if (req.body.alias) {
       const duplicateAlias = await BankAccount.findOne({
-        where: { alias: req.body?.alias },
+        where: { alias: req.body.alias },
       });
       if (duplicateAlias) {
         return res.status(400).send("Alias already exists");
@@ -41,7 +41,7 @@ const createBankAccount = async (req, res) => {
     // Check for duplicate CBU
     if (req.body.cbu) {
       const duplicateCBU = await BankAccount.findOne({
-        where: { cbu: req.body?.cbu },
+        where: { cbu: req.body.cbu },
       });
 
       if (duplicateCBU) {
