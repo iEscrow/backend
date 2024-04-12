@@ -114,7 +114,10 @@ const getAllEscrowTypes = async (req, res) => {
 
 const createEscrow = async (req, res) => {
   try {
-    const { payer_currency, payee_currency } = req.body;
+    const { payer_currency, payee_currency, type } = req.body;
+
+    
+    console.log(CurrencyType)
 
     const payerCurrency = await Currency.findByPk(payer_currency, {
       include: CurrencyType,
@@ -142,7 +145,7 @@ const createEscrow = async (req, res) => {
         payer_currency_type: payerCurrency.CurrencyType.dataValues.id,
         payee_currency_type: payeeCurrency.CurrencyType.dataValues.id,
         who_pay: whoPay,
-        ...req.body,
+        type,
       },
       { raw: true }
     );
