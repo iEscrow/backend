@@ -14,7 +14,7 @@ const validateToken = passportMiddleware.authenticate('jwt', { session: false })
 router.get('/', usersController.getAllUsers)
 router.get('/validate-token',  jwtMiddleware, usersController.validateToken)
 router.get('/:id', usersController.getUserById)
-router.post('/', createUserValidator, usersController.createUser)
+router.post('/', usersController.createUser)
 router.put(
   '/:id',
   validateToken,

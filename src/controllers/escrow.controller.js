@@ -15,6 +15,7 @@ const TokenStandard = require("../models/TokenStandard");
 
 const getAllEscrows = async (req, res) => {
   try {
+    console.log("first");
     const escrows = await Escrow.findAll({
       include: [
         { model: EscrowStatus, as: "Status" },
@@ -116,15 +117,16 @@ const createEscrow = async (req, res) => {
   try {
     const { payer_currency, payee_currency, type } = req.body;
 
-    
-    console.log(CurrencyType)
+    console.log(CurrencyType);
 
     const payerCurrency = await Currency.findByPk(payer_currency, {
       include: CurrencyType,
     });
+    console.log(payerCurrency);
     const payeeCurrency = await Currency.findByPk(payee_currency, {
       include: CurrencyType,
     });
+    console.log(payerCurrency);
 
     const transaction_type = await TransactionType.findOne({
       where: {
@@ -145,6 +147,8 @@ const createEscrow = async (req, res) => {
         payer_currency_type: payerCurrency.CurrencyType.dataValues.id,
         payee_currency_type: payeeCurrency.CurrencyType.dataValues.id,
         who_pay: whoPay,
+        payer_currency,
+        payee_currency,
         type,
       },
       { raw: true }
@@ -542,9 +546,9 @@ const escrowPay = async (req, res) => {
                 : req.body.payee_id
               : req.body.payee_id
             : null,
-        status:          req.body.status === 5 ? 6 : req.body.who_pay === req.user.id ? 5 : 6,
-        [`${whoPay}_paid`]: true
-          
+        status:
+          req.body.status === 5 ? 6 : req.body.who_pay === req.user.id ? 5 : 6,
+        [`${whoPay}_paid`]: true,
       },
       {
         where: {
