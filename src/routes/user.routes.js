@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const usersController = require('../controllers/userController')
+const usersController = require('../controllers/user.controller')
 const passportMiddleware = require('../middlewares/passportMiddleware')
 const {
   createUserValidator,
@@ -13,7 +13,6 @@ const validateToken = passportMiddleware.authenticate('jwt', { session: false })
 
 router.get('/', usersController.getAllUsers)
 router.get('/validate-token',  jwtMiddleware, usersController.validateToken)
-router.get('/:id', usersController.getUserById)
 router.post('/', usersController.createUser)
 router.put(
   '/:id',
@@ -22,5 +21,7 @@ router.put(
   usersController.updateUser
 )
 router.post('/login', usersController.authUser)
+router.get('/token', jwtMiddleware ,usersController.validateToken)
+router.get('/:id', usersController.getUserById)
 
 module.exports = router

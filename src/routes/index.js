@@ -1,5 +1,5 @@
 const express = require("express");
-const userRoutes = require("./userRoutes");
+const userRoutes = require("./user.routes");
 const bankRoutes = require("./bank.routes");
 const bankAccountRoutes = require("./bankAccount.routes");
 const escrowRoutes = require("./escrow.routes");

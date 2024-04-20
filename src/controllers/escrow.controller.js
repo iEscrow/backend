@@ -72,6 +72,37 @@ const getAllMyEscrows = async (req, res) => {
   }
 };
 
+const getAllMarketplace = async (req, res) => {
+  try {
+    console.log("market")
+    const escrows = await Escrow.findAll({
+      where: { status: 2 },
+      include: [
+        { model: EscrowStatus, as: "Status" },
+        { model: EscrowType, as: "Type" },
+        { model: TransactionType, as: "TransactionType" },
+        { model: BankAccount, as: "PayeeBankAccountTo" },
+        { model: BankAccount, as: "PayeeBankAccountFrom" },
+        { model: Wallet, as: "PayeeWalletTo" },
+        { model: Wallet, as: "PayeeWalletFrom" },
+        { model: BankAccount, as: "PayerBankAccountTo" },
+        { model: BankAccount, as: "PayerBankAccountFrom" },
+        { model: Wallet, as: "PayerWalletTo" },
+        { model: Wallet, as: "PayerWalletFrom" },
+        { model: User, as: "PayeeUser" },
+        { model: User, as: "PayerUser" },
+        { model: Currency, as: "PayeeCurrency" },
+        { model: Currency, as: "PayerCurrency" },
+        { model: EscrowType, as: "Type" },
+      ],
+    });
+    res.status(200).json(escrows);
+  } catch (error) {
+    console.error("Error al obtener escrows:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
+
 const getEscrowByID = async (req, res) => {
   try {
     const { id } = req.params;
@@ -117,8 +148,7 @@ const createEscrow = async (req, res) => {
   try {
     const { payer_currency, payee_currency, type } = req.body;
 
-    console.log(CurrencyType);
-
+    const user_id = req.user.id
     const payerCurrency = await Currency.findByPk(payer_currency, {
       include: CurrencyType,
     });
@@ -141,7 +171,7 @@ const createEscrow = async (req, res) => {
 
     const newEscrow = await Escrow.create(
       {
-        payer_id: req.user.id,
+        payer_id: user_id,
         status: 1,
         transaction_type: transaction_type.id,
         payer_currency_type: payerCurrency.CurrencyType.dataValues.id,
@@ -574,6 +604,7 @@ module.exports = {
   escrowPayerInfo,
   escrowPayeeInfo,
   getAllMyEscrows,
+  getAllMarketplace,
   escrowPayeeAccept,
   escrowPayerWallet: escrowWalletUpdate,
   escrowPay,

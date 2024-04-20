@@ -8,10 +8,11 @@ const validateToken = passportMiddleware.authenticate("jwt", {
   session: false,
 });
 
-router.get("/", escrowController.getAllEscrows);
-router.get("/types", escrowController.getAllEscrowTypes);
+router.get("/", jwtMiddleware, escrowController.getAllEscrows);
+router.get("/types", jwtMiddleware,escrowController.getAllEscrowTypes);
 router.get("/my-escrows", jwtMiddleware, escrowController.getAllMyEscrows);
-router.get("/:id", escrowController.getEscrowByID);
+router.get("/marketplace", jwtMiddleware, escrowController.getAllMarketplace);
+router.get("/:id", jwtMiddleware,escrowController.getEscrowByID);
 router.post("/", jwtMiddleware,escrowController.createEscrow);
 router.put("/publish/:id", jwtMiddleware , escrowController.escrowPayerInfo);
 router.put("/accept/:id", jwtMiddleware , escrowController.escrowPayeeAccept);

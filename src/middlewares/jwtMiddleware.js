@@ -2,7 +2,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 const jwtMiddleware = async (req, res, next) => {
-  const token = req.header('Authorization').replace('Bearer ', '');
+  const auth = req.header('Authorization');
+  const token = typeof auth  === "string" ? auth.replace('Bearer ', '') : null
 
   if (typeof token !== "undefined") {
     req.token = token;
@@ -12,7 +13,7 @@ const jwtMiddleware = async (req, res, next) => {
       const userId = jwt.verify(req.token, process.env.SECRET_KEY);
       const user = await User.findByPk(userId._id, { raw: true });
 
-      if (!!!user) {
+      if (!user) {
         return res.status(404).json({ message: "Usuario no encontrado" });
       }
 
