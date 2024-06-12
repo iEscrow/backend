@@ -9,6 +9,8 @@ const currenciesRoutes = require("./currencies.routes");
 const balanceRoutes = require("./balances.routes");
 const walletsRoutes = require("./wallets.routes");
 const masterWalletsRoutes = require("./masterWallets.routes");
+const helpCenterRoutes = require("./helpCenter.routes");
+const footerRoutes = require("./footer.routes");
 
 const router = express.Router();
 router.use("/users", userRoutes);
@@ -21,5 +23,7 @@ router.use("/transaction-types", transactionTypeRoutes);
 router.use("/currencies", currenciesRoutes);
 router.use("/balances", balanceRoutes);
 router.use("/master-wallets", masterWalletsRoutes);
+router.use("/help-center", helpCenterRoutes);
+router.use("/footer", footerRoutes);
 
 module.exports = router;

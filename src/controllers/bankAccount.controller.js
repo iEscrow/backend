@@ -16,6 +16,7 @@ const getBankAccounts = async (req, res) => {
       include: [Bank],
     });
 
+    
     res.status(200).json(accounts);
   } catch (error) {
     res.status(500).json({ message: error.message });

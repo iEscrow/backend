@@ -6,10 +6,29 @@ const User = require("../models/User");
 const Wallet = require("../models/Wallet");
 const BankAccount = require("../models/BankAccount");
 const Escrow = require("../models/Escrow");
+const Roles = require("../models/Role");
+
+function generarCodigoReferido() {
+  const caracteres =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  return Array.from({ length: 7 }, () =>
+    caracteres.charAt(Math.floor(Math.random() * caracteres.length))
+  ).join("");
+}
 
 exports.createUser = async (req, res) => {
   try {
-    const { username, email, password, repeat_password } = req.body;
+    const { username, email, password, repeat_password, last_name,
+      first_name } =
+      req.body;
+    let { ref } = req.params;
+
+    if (ref) {
+      const userReferred = await User.findOne({ where: { refer_code: ref } });
+      if (!userReferred) {
+        return res.status(500).json({ error: "No existe este referido" });
+      }
+    }
 
     const userByEmail = await User.findOne({ where: { email } });
     const passwordHashed = bcryptjs.hashSync(password, 10);
@@ -25,7 +44,11 @@ exports.createUser = async (req, res) => {
     const newUser = await User.create({
       username,
       email,
+      last_name,
+      first_name,
       password: passwordHashed,
+      referred_by: ref,
+      refer_code: generarCodigoReferido(),
     });
 
     const token = jwt.sign(
@@ -42,7 +65,7 @@ exports.createUser = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll({include: [BankAccount, Wallet]});
+    const users = await User.findAll({ include: [BankAccount, Wallet, Roles] });
     res.status(200).json(users);
   } catch (error) {
     console.error("Error al obtener la lista de usuarios:", error);
@@ -54,7 +77,7 @@ exports.getUserById = async (req, res) => {
   try {
     console.log(req.params);
     const { id } = req.params;
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(id, { include: Roles });
 
     const accounts = await BankAccount.findAll({
       where: { owner: user.id },
@@ -100,14 +123,12 @@ exports.updateUser = async (req, res) => {
 
 exports.authUser = async (req, res) => {
   try {
-    console.log(req.body)
     const { username, password } = req.body;
     const user = await User.findOne({ where: { username } });
-    console.log(user)
     if (!user) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
-    console.log(user)
+
     const isPasswordOk = bcryptjs.compareSync(password, user.password);
 
     if (!isPasswordOk) {
@@ -120,16 +141,54 @@ exports.authUser = async (req, res) => {
     );
     res.status(200).json({ user, token });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ error: "No se pudo loguear este usuario" });
   }
 };
 
 exports.validateToken = async (req, res) => {
   try {
-    console.log(req.user)
-    res.status(200).json(req.user)
+    console.log(req.user);
+    res.status(200).json(req.user);
   } catch (error) {
     res.status(500).json({ error: "Token invalido" });
   }
-}
+};
+
+exports.enableUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findByPk(id);
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    user.active = true;
+    await user.save();
+
+    res.status(200).json({ message: "Usuario activado con éxito", user });
+  } catch (error) {
+    console.error("Error al activar el usuario:", error);
+    res.status(500).json({ error: "No se pudo activar el usuario" });
+  }
+};
+
+exports.disableUser = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+    console.log(user);
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    user.active = false;
+    await user.save();
+
+    res.status(200).json({ message: "Usuario deshabilitado con éxito", user });
+  } catch (error) {
+    console.error("Error al deshabilitar el usuario:", error);
+    res.status(500).json({ error: "No se pudo deshabilitar el usuario" });
+  }
+};
