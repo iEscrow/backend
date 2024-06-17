@@ -18,7 +18,13 @@ const { Sequelize, Op } = require("sequelize");
 
 const port = process.env.PORT || 3000;
 
-app.use(cors());
+const corsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(i18n.init);
 app.use(
