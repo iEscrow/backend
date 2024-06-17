@@ -56,7 +56,13 @@ exports.createUser = async (req, res) => {
       process.env.SECRET_KEY
     );
 
-    return res.status(201).json({ user: newUser, token });
+    res.cookie('token', token, {
+      httpOnly: true, 
+      secure: false, 
+      maxAge: 3600 * 1000, 
+    });
+
+    return res.status(201).json({ user: newUser });
   } catch (error) {
     console.error("Error al crear un usuario:", error);
     res.status(500).json({ error: "No se pudo crear el usuario" });
@@ -125,6 +131,7 @@ exports.authUser = async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ where: { username } });
+
     if (!user) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
@@ -139,7 +146,14 @@ exports.authUser = async (req, res) => {
       { _id: user.id, exp: Math.floor(Date.now() / 1000) + 3600 },
       process.env.SECRET_KEY
     );
-    res.status(200).json({ user, token });
+
+    res.cookie('token', token, {
+      httpOnly: true, 
+      secure: false, 
+      maxAge: 3600 * 1000, 
+    });
+
+    return res.status(200).json({ user });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "No se pudo loguear este usuario" });
