@@ -13,11 +13,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '21'
-
       - name: Git pull
         run: git pull
 
@@ -26,5 +21,5 @@ jobs:
 
       - name: Restart service
         run: |
-          # Reiniciar el servicio usando systemctl con sudo
-          sudo systemctl restart iescrow.service
+          # Reiniciar el servicio usando systemctl con el usuario deployuser
+          sudo -u deployuser /bin/systemctl restart iescrow.service
