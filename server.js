@@ -14,15 +14,13 @@ const jwt = require("jsonwebtoken");
 const User = require("./src/models/User");
 const Message = require("./src/models/Message");
 const EscrowRoom = require("./src/models/EscrowRoom");
-const { Sequelize, Op } = require("sequelize");
 
 const port = process.env.PORT || 3000;
 
-const allowedOrigins = ['http://localhost:3000']; // Agrega aquí otros dominios permitidos si es necesario
+const allowedOrigins = ['http://localhost:3000'];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    console.log(origin)
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -31,7 +29,7 @@ const corsOptions = {
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true // Habilita las credenciales para intercambio de cookies
+  credentials: true 
 };
 
 app.use(cors(corsOptions));
