@@ -1,12 +1,11 @@
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { ethers } = require("ethers");
 
 const User = require("../models/User");
 const Wallet = require("../models/Wallet");
 const BankAccount = require("../models/BankAccount");
-const Escrow = require("../models/Escrow");
 const Roles = require("../models/Role");
+const cookieConfig = require("../config/cookieConfig");
 
 function generarCodigoReferido() {
   const caracteres =
@@ -56,11 +55,7 @@ exports.createUser = async (req, res) => {
       process.env.SECRET_KEY
     );
 
-    res.cookie('token', token, {
-      httpOnly: true, 
-      secure: false, 
-      maxAge: 3600 * 1000, 
-    });
+    res.cookie('token', token, cookieConfig);
 
     return res.status(201).json({ user: newUser });
   } catch (error) {
@@ -147,11 +142,7 @@ exports.authUser = async (req, res) => {
       process.env.SECRET_KEY
     );
 
-    res.cookie('token', token, {
-      httpOnly: true, 
-      secure: false, 
-      maxAge: 3600 * 1000, 
-    });
+    res.cookie('token', token,cookieConfig);
 
     return res.status(200).json({ user });
   } catch (error) {
