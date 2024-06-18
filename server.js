@@ -14,10 +14,12 @@ const jwt = require("jsonwebtoken");
 const User = require("./src/models/User");
 const Message = require("./src/models/Message");
 const EscrowRoom = require("./src/models/EscrowRoom");
+const cookieParser = require('cookie-parser');
 
 const port = process.env.PORT || 3000;
 
 //test
+app.use(cookieParser());
 
 const allowedOrigins = ['http://localhost:3000'];
 
