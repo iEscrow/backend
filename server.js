@@ -17,6 +17,8 @@ const EscrowRoom = require("./src/models/EscrowRoom");
 
 const port = process.env.PORT || 3000;
 
+//test
+
 const allowedOrigins = ['http://localhost:3000'];
 
 const corsOptions = {
@@ -29,7 +31,7 @@ const corsOptions = {
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true 
+  credentials: true
 };
 
 app.use(cors(corsOptions));

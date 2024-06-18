@@ -4,7 +4,6 @@ const router = express.Router();
 const usersController = require("../controllers/user.controller");
 const passportMiddleware = require("../middlewares/passportMiddleware");
 const {
-  createUserValidator,
   updateUserValidator,
 } = require("../middlewares/userValidationMiddleware");
 const jwtMiddleware = require("../middlewares/jwtMiddleware");
