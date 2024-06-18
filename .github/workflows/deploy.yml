@@ -21,5 +21,8 @@ jobs:
 
       - name: Restart service
         run: |
-          # Reiniciar el servicio usando systemctl con el usuario deployuser
-          sudo -u deployuser /bin/systemctl restart iescrow.service
+          # Obtener la contraseña del secreto
+          DEPLOYUSER_PASSWORD=$DEPLOYUSER_PASSWORD
+
+          # Reiniciar el servicio usando sudo con la contraseña
+          echo "$DEPLOYUSER_PASSWORD" | sudo -S systemctl restart iescrow.service
