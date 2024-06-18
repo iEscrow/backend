@@ -13,16 +13,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Git pull
-        run: git pull
+      - name: Install PM2 globally
+        run: sudo npm install -g pm2
 
       - name: Install dependencies
         run: npm install
 
-      - name: Restart service
+      - name: Start or restart PM2 process
         run: |
-          # Obtener la contraseña del secreto
-          DEPLOYUSER_PASSWORD=$DEPLOYUSER_PASSWORD
-
-          # Reiniciar el servicio usando sudo con la contraseña
-          echo "$DEPLOYUSER_PASSWORD" | sudo -S systemctl restart iescrow.service
+          pm2 restart iescrow
