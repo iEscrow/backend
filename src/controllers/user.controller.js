@@ -17,9 +17,14 @@ function generarCodigoReferido() {
 
 exports.createUser = async (req, res) => {
   try {
-    const { username, email, password, repeat_password, last_name,
-      first_name } =
-      req.body;
+    const {
+      username,
+      email,
+      password,
+      repeat_password,
+      last_name,
+      first_name,
+    } = req.body;
     let { ref } = req.params;
 
     if (ref) {
@@ -55,7 +60,7 @@ exports.createUser = async (req, res) => {
       process.env.SECRET_KEY
     );
 
-    res.cookie('token', token, cookieConfig);
+    res.cookie("token", token, cookieConfig);
 
     return res.status(201).json({ user: newUser });
   } catch (error) {
@@ -142,7 +147,7 @@ exports.authUser = async (req, res) => {
       process.env.SECRET_KEY
     );
 
-    res.cookie('token', token,cookieConfig);
+    res.cookie("token", token, cookieConfig);
 
     return res.status(200).json({ user });
   } catch (error) {
@@ -153,8 +158,14 @@ exports.authUser = async (req, res) => {
 
 exports.validateToken = async (req, res) => {
   try {
-    console.log(req.user);
-    res.status(200).json(req.user);
+    console.log(req.user)
+    const { user } = req;
+    const token = jwt.sign(
+      { _id: user.id, exp: Math.floor(Date.now() / 1000) + 3600 },
+      process.env.SECRET_KEY
+    );
+    res.cookie("token", token, cookieConfig);
+    return res.status(200).json(req.user);
   } catch (error) {
     res.status(500).json({ error: "Token invalido" });
   }
