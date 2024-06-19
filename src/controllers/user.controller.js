@@ -62,7 +62,7 @@ exports.createUser = async (req, res) => {
 
     res.cookie("token", token, cookieConfig);
 
-    return res.status(201).json({ user: newUser });
+    return res.status(201).json({ user: newUser, token });
   } catch (error) {
     console.error("Error al crear un usuario:", error);
     res.status(500).json({ error: "No se pudo crear el usuario" });
@@ -149,7 +149,7 @@ exports.authUser = async (req, res) => {
 
     res.cookie("token", token, cookieConfig);
 
-    return res.status(200).json({ user });
+    return res.status(200).json({ user, token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "No se pudo loguear este usuario" });
@@ -158,14 +158,13 @@ exports.authUser = async (req, res) => {
 
 exports.validateToken = async (req, res) => {
   try {
-    console.log(req.user)
     const { user } = req;
     const token = jwt.sign(
       { _id: user.id, exp: Math.floor(Date.now() / 1000) + 3600 },
       process.env.SECRET_KEY
     );
     res.cookie("token", token, cookieConfig);
-    return res.status(200).json(req.user);
+    return res.status(200).json({user: req.user, token});
   } catch (error) {
     res.status(500).json({ error: "Token invalido" });
   }
