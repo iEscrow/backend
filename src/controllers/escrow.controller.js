@@ -76,7 +76,7 @@ const getAllMarketplace = async (req, res) => {
   try {
     console.log("market")
     const escrows = await Escrow.findAll({
-      where: { status: 2 },
+      where: { status: 2, type: 1 },
       include: [
         { model: EscrowStatus, as: "Status" },
         { model: EscrowType, as: "Type" },
@@ -147,13 +147,12 @@ const getAllEscrowTypes = async (req, res) => {
 const createEscrow = async (req, res) => {
   try {
     const { payer_currency, payee_currency, type } = req.body;
-
     const user_id = req.user.id
-    const payerCurrency = await Currency.findByPk(payer_currency, {
+    const payerCurrency = await Currency.findByPk(payer_currency.id, {
       include: CurrencyType,
     });
     console.log(payerCurrency);
-    const payeeCurrency = await Currency.findByPk(payee_currency, {
+    const payeeCurrency = await Currency.findByPk(payee_currency.id, {
       include: CurrencyType,
     });
     console.log(payerCurrency);
@@ -177,8 +176,8 @@ const createEscrow = async (req, res) => {
         payer_currency_type: payerCurrency.CurrencyType.dataValues.id,
         payee_currency_type: payeeCurrency.CurrencyType.dataValues.id,
         who_pay: whoPay,
-        payer_currency,
-        payee_currency,
+        payer_currency: payer_currency.id,
+        payee_currency:payee_currency.id,
         type,
       },
       { raw: true }
